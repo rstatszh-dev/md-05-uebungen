@@ -1,0 +1,152 @@
+---
+title: "Datumswerte in R"
+format:
+  html:
+    embed-resources: true
+    toc: true
+execute:
+  warning: false
+editor_options: 
+  chunk_output_type: console
+editor: visual
+---
+
+## R-Pakete laden
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+```
+
+## Daten importieren
+
+### Daten
+
+Titel: Web Analytics des Datenkatalogs des Kantons Zürich
+
+Dieser Datensatz enthält die Web Analytics des Datenkatalogs des Kantons Zürich (www.zh.ch/daten). Die Daten zeigen, welche Datensätze (dataset) und Ressourcen (distribution) (siehe Definition in DCAP-AP CH, unten verlinkt) wie oft aufgerufen und besucht wurden. 
+
+Link: <https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html#/datasets/2522@statistisches-amt-kanton-zuerich>
+
+```{r}
+web_analytics_in <- read_csv("daten/KTZH_00002522_00005024.csv")
+```
+
+### Aufgabe
+
+Wir stellen folgende Fragen an den Datensatz? 
+
+- Seit wann wird die Statistik geführt?
+- Was sind die 10 meistbesuchten Datensätze?
+- Wieviele Klicks und Besuchende gab es insgesamt? Wieviele pro Jahr, Monat, Woche und Wochentag?
+
+## Daten erkunden
+
+```{r}
+glimpse(web_analytics_in)
+web_analytics_in
+
+web_analytics_in |> 
+    arrange(datum)
+
+web_analytics_in |> 
+    group_by(datensatz_id, datensatz_titel) |> 
+    summarise(sum_klicks = sum(anzahl_klicks),
+              sum_besuchende = sum(anzahl_besuchende)) |> 
+    arrange(desc(sum_klicks))
+
+web_analytics_in |> 
+    summarise(sum_klicks = sum(anzahl_klicks),
+              sum_besuchende = sum(anzahl_besuchende))
+    
+```
+
+## Daten transformieren
+
+### Datumswerte
+
+ISO 8601
+
+```{r}
+
+today()
+now()
+
+csv <- "daten/dates.csv"
+
+read_csv(csv)
+
+"2024-10-22" |> class()
+
+ymd("2024-10-22") |> class()
+
+dmy("22.10.2024") |> class()
+
+as_date("1970-01-01") |> 
+    as.numeric()
+
+```
+
+### Daten ergänzen
+
+```{r}
+web_analytics <- web_analytics_in |> 
+    mutate(jahr = year(datum),
+           monat = month(datum, label = TRUE, abbr = TRUE, locale = "de_DE"),
+           woche = week(datum),
+           wochentag = wday(datum, label = TRUE, abbr = TRUE, week_start = 1)) 
+```
+
+### Daten zusammenfassen
+
+```{r}
+
+# Wieviele downloads pro jahr?
+
+web_analytics |> 
+    group_by(jahr) |> 
+    summarise(klicks = sum(anzahl_klicks),
+              besuchende = sum(anzahl_besuchende))
+
+# Wieviele downloads pro monat?
+# Oktober 2023: Parlamentswahlen
+# Datensatz id 2302: "Kandidierende und Listenverbindungen Nationalratswahl 2023"
+
+web_analytics |> 
+    group_by(jahr, monat) |> 
+    summarise(klicks = sum(anzahl_klicks),
+              besuchende = sum(anzahl_besuchende))
+
+web_analytics |> 
+    filter(datensatz_id == 2302) |> 
+    group_by(jahr, monat) |> 
+    summarise(klicks = sum(anzahl_klicks),
+              besuchende = sum(anzahl_besuchende))
+
+
+# Wieviele downloads pro wochentag?
+
+web_analytics |> 
+    group_by(wochentag) |> 
+    summarise(klicks = sum(anzahl_klicks),
+              besuchende = sum(anzahl_besuchende)) 
+
+
+web_analytics |> 
+    group_by(monat, wochentag) |> 
+    summarise(klicks = sum(anzahl_klicks),
+              besuchende = sum(anzahl_besuchende)) |> 
+    ggplot(aes(x = monat, y = klicks, color = wochentag, group = wochentag)) +
+    geom_point() +
+    geom_path() +
+    scale_color_brewer(type = "qual", palette = 1)
+
+
+web_analytics |> 
+    ggplot(aes(x = datum, y = anzahl_klicks)) +
+    geom_point() 
+
+
+```

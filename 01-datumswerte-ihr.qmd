@@ -1,0 +1,61 @@
+---
+title: "Datumswerte in R"
+format:
+  html:
+    embed-resources: true
+    toc: true
+execute:
+  warning: false
+editor_options: 
+  chunk_output_type: console
+editor: visual
+---
+
+## R-Pakete laden
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+```
+
+## Daten importieren
+
+### Daten
+
+Titel: Web Analytics des Datenkatalogs des Kantons Zürich
+
+Dieser Datensatz enthält die Web Analytics des Datenkatalogs des Kantons Zürich (www.zh.ch/daten). Die Daten zeigen, welche Datensätze (dataset) und Ressourcen (distribution) (siehe Definition in DCAP-AP CH, unten verlinkt) wie oft aufgerufen und besucht wurden.
+
+Link: [https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html#/datasets/2522\@statistisches-amt-kanton-zuerich](https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html#/datasets/2522@statistisches-amt-kanton-zuerich){.uri}
+
+```{r}
+web_analytics_in <- read_csv("daten/KTZH_00002522_00005043.csv")
+```
+
+## Daten erkunden
+
+-   Welche Variablen sind im Datensatz enthalten?
+
+```{r}
+web_analytics_in 
+```
+
+## Daten analysieren
+
+1. Wie stehen die Anzahl Klicks im Verhältnis zu den Anzahl Besuchenden und den Anzahl Downloads pro Datensatz?
+
+```{r}
+
+web_analytics_in |> 
+    group_by(datensatz_id, datensatz_titel) |> 
+    summarise(
+        klicks = sum(anzahl_klicks),
+        besuchende = sum(anzahl_besuchende),
+        downloads = sum(anzahl_downloads)
+    ) |> 
+    arrange(desc(downloads))
+
+```
+
