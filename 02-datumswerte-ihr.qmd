@@ -44,7 +44,7 @@ web_analytics_in
 
 ## Daten analysieren
 
-1. Wie stehen die Anzahl Klicks im Verhältnis zu den Anzahl Besuchenden und den Anzahl Downloads pro Datensatz?
+1.  Wie stehen die Anzahl Klicks im Verhältnis zu den Anzahl Besuchenden und den Anzahl Downloads pro Datensatz?
 
 ```{r}
 
@@ -58,4 +58,3 @@ web_analytics_in |>
     arrange(desc(downloads))
 
 ```
-

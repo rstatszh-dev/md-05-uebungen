@@ -11,7 +11,6 @@ editor_options:
 editor: visual
 ---
 
-
 ## R-Pakete laden & Daten importieren
 
 ```{r}
@@ -29,7 +28,7 @@ lernende_in <- read_csv(link)
 
 ## Funktion: `case_when()`
 
-Die Funktion `case_when()` wird verwendet, um eine Reihe von Bedingungen zu überprüfen und basierend auf diesen Bedingungen Werte zu erstellen. Die Funktion wird in Verbindung mit `mutate()` genutzt um eine neue Spalte zu erstellen in welcher die Werte gespeichert werden. 
+Die Funktion `case_when()` wird verwendet, um eine Reihe von Bedingungen zu überprüfen und basierend auf diesen Bedingungen Werte zu erstellen. Die Funktion wird in Verbindung mit `mutate()` genutzt um eine neue Spalte zu erstellen in welcher die Werte gespeichert werden.
 
 ### Beispiel: Pinguine
 
@@ -49,7 +48,7 @@ penguins |>
 
 Die Übersicht zeigt alle Lernenden im Kanton Zürich, nach Schulstufen und nach Schultypen. Studierende der Tertiärstufe 5A (Hochschulen) sind nicht enthalten. Die Daten werden jährlich für den Stichtag 15.9. erhoben.
 
-Datenkatalog: https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html#/datasets/524@bildungsstatistik-kanton-zuerich 
+Datenkatalog: https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html#/datasets/524\@bildungsstatistik-kanton-zuerich
 
 ```{r}
 
@@ -119,6 +118,3 @@ lernende2022 |>
     group_by(Stufe, Finanzierung) |>
     summarise(Anzahl = sum(Anzahl)) 
 ```
-
-
-

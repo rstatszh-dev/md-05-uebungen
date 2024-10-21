@@ -26,9 +26,9 @@ library(lubridate)
 
 Titel: Web Analytics des Datenkatalogs des Kantons Zürich
 
-Dieser Datensatz enthält die Web Analytics des Datenkatalogs des Kantons Zürich (www.zh.ch/daten). Die Daten zeigen, welche Datensätze (dataset) und Ressourcen (distribution) (siehe Definition in DCAP-AP CH, unten verlinkt) wie oft aufgerufen und besucht wurden. 
+Dieser Datensatz enthält die Web Analytics des Datenkatalogs des Kantons Zürich (www.zh.ch/daten). Die Daten zeigen, welche Datensätze (dataset) und Ressourcen (distribution) (siehe Definition in DCAP-AP CH, unten verlinkt) wie oft aufgerufen und besucht wurden.
 
-Link: <https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html#/datasets/2522@statistisches-amt-kanton-zuerich>
+Link: [https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html#/datasets/2522\@statistisches-amt-kanton-zuerich](https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html#/datasets/2522@statistisches-amt-kanton-zuerich){.uri}
 
 ```{r}
 web_analytics_in <- read_csv("daten/KTZH_00002522_00005024.csv")
@@ -36,11 +36,11 @@ web_analytics_in <- read_csv("daten/KTZH_00002522_00005024.csv")
 
 ### Aufgabe
 
-Wir stellen folgende Fragen an den Datensatz? 
+Wir stellen folgende Fragen an den Datensatz?
 
-- Seit wann wird die Statistik geführt?
-- Was sind die 10 meistbesuchten Datensätze?
-- Wieviele Klicks und Besuchende gab es insgesamt? Wieviele pro Jahr, Monat, Woche und Wochentag?
+-   Seit wann wird die Statistik geführt?
+-   Was sind die 10 meistbesuchten Datensätze?
+-   Wieviele Klicks und Besuchende gab es insgesamt? Wieviele pro Jahr, Monat, Woche und Wochentag?
 
 ## Daten erkunden
 
