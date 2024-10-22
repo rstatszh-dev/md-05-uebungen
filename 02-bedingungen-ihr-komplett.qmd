@@ -34,7 +34,16 @@ library(gapminder)
 3.  Speichere den resultierenden Datensatz in einem neuen Daten-Objekt `gapminder_cat`.
 
 ```{r}
-
+gapminder_cat <- gapminder |> 
+  mutate(
+    life_expectancy_category = case_when(
+      lifeExp < 50 ~ "sehr niedrig",
+      lifeExp < 60 ~ "niedrig",
+      lifeExp < 70 ~ "mittel",
+      lifeExp < 80 ~ "hoch",
+      .default = "sehr hoch"
+    )
+  )
 ```
 
 ## Daten eingrenzen
@@ -44,7 +53,8 @@ library(gapminder)
 2.  Speichere den resultierenden Datensatz in einem neuen Daten-Objekt `gapminder_cat_2007`.
 
 ```{r}
-
+gapminder_cat_2007 <- gapminder_cat |> 
+  filter(year == max(year))
 ```
 
 ## Daten visualisieren (**Bonusaufgabe**)
@@ -54,18 +64,23 @@ library(gapminder)
 2.  Was fällt dir auf?
 
 ```{r}
-
+ggplot(data = gapminder_cat_2007, 
+       mapping = aes(x = life_expectancy_category)) +
+  geom_bar() 
 ```
 
 3.  Erstelle das gleiche Balkendiagramm wie in Punkt 1 und füge Farben für die Variable `continent` hinzu.
 
 ```{r}
-
-
+ggplot(data = gapminder_cat_2007, 
+       mapping = aes(x = life_expectancy_category, 
+                     fill = continent)) +
+  geom_bar() 
 ```
 
 4.  Nutze das Daten-Objekt `gapminder_cat_2007` und die `filter()` Funktion um nur die Länder mit einer sehr hohen Lebenserwartung zu selektieren. Wieviele Länder sind es?
 
 ```{r}
-
+gapminder_cat_2007 |> 
+    filter(life_expectancy_category == "sehr hoch")
 ```
