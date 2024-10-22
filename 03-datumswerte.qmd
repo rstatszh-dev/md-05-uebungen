@@ -45,22 +45,7 @@ Wir stellen folgende Fragen an den Datensatz?
 ## Daten erkunden
 
 ```{r}
-glimpse(web_analytics_in)
-web_analytics_in
 
-web_analytics_in |> 
-    arrange(datum)
-
-web_analytics_in |> 
-    group_by(datensatz_id, datensatz_titel) |> 
-    summarise(sum_klicks = sum(anzahl_klicks),
-              sum_besuchende = sum(anzahl_besuchende)) |> 
-    arrange(desc(sum_klicks))
-
-web_analytics_in |> 
-    summarise(sum_klicks = sum(anzahl_klicks),
-              sum_besuchende = sum(anzahl_besuchende))
-    
 ```
 
 ## Daten transformieren
@@ -71,82 +56,16 @@ ISO 8601
 
 ```{r}
 
-today()
-now()
-
-csv <- "daten/dates.csv"
-
-read_csv(csv)
-
-"2024-10-22" |> class()
-
-ymd("2024-10-22") |> class()
-
-dmy("22.10.2024") |> class()
-
-as_date("1970-01-01") |> 
-    as.numeric()
-
 ```
 
 ### Daten ergänzen
 
 ```{r}
-web_analytics <- web_analytics_in |> 
-    mutate(jahr = year(datum),
-           monat = month(datum, label = TRUE, abbr = TRUE, locale = "de_DE"),
-           woche = week(datum),
-           wochentag = wday(datum, label = TRUE, abbr = TRUE, week_start = 1)) 
+
 ```
 
 ### Daten zusammenfassen
 
 ```{r}
-
-# Wieviele downloads pro jahr?
-
-web_analytics |> 
-    group_by(jahr) |> 
-    summarise(klicks = sum(anzahl_klicks),
-              besuchende = sum(anzahl_besuchende))
-
-# Wieviele downloads pro monat?
-# Oktober 2023: Parlamentswahlen
-# Datensatz id 2302: "Kandidierende und Listenverbindungen Nationalratswahl 2023"
-
-web_analytics |> 
-    group_by(jahr, monat) |> 
-    summarise(klicks = sum(anzahl_klicks),
-              besuchende = sum(anzahl_besuchende))
-
-web_analytics |> 
-    filter(datensatz_id == 2302) |> 
-    group_by(jahr, monat) |> 
-    summarise(klicks = sum(anzahl_klicks),
-              besuchende = sum(anzahl_besuchende))
-
-
-# Wieviele downloads pro wochentag?
-
-web_analytics |> 
-    group_by(wochentag) |> 
-    summarise(klicks = sum(anzahl_klicks),
-              besuchende = sum(anzahl_besuchende)) 
-
-
-web_analytics |> 
-    group_by(monat, wochentag) |> 
-    summarise(klicks = sum(anzahl_klicks),
-              besuchende = sum(anzahl_besuchende)) |> 
-    ggplot(aes(x = monat, y = klicks, color = wochentag, group = wochentag)) +
-    geom_point() +
-    geom_path() +
-    scale_color_brewer(type = "qual", palette = 1)
-
-
-web_analytics |> 
-    ggplot(aes(x = datum, y = anzahl_klicks)) +
-    geom_point() 
-
 
 ```
