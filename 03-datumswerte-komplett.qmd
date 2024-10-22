@@ -96,9 +96,9 @@ as_date(0)
 ```{r}
 web_analytics <- web_analytics_in |> 
     mutate(jahr = year(datum),
-           monat = month(datum, label = TRUE, abbr = TRUE, locale = "de_DE"),
+           monat = month(datum, label = TRUE, abbr = FALSE),
            woche = week(datum),
-           wochentag = wday(datum, label = TRUE, abbr = TRUE, week_start = 1)) 
+           wochentag = wday(datum, label = TRUE, abbr = FALSE)) 
 ```
 
 ### Daten zusammenfassen
