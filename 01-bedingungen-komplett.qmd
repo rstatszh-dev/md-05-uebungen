@@ -1,0 +1,125 @@
+---
+title: "Bedingte Anweisungen"
+format:
+  html:
+    embed-resources: true
+    toc: true
+execute:
+  warning: false
+editor_options: 
+  chunk_output_type: console
+editor: visual
+---
+
+## R-Pakete laden & Daten importieren
+
+```{r}
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(palmerpenguins)
+```
+
+```{r}
+link <- "https://www.web.statistik.zh.ch/ogd/data/bista/ZH_Uebersicht_alle_Lernende.csv"
+
+lernende_in <- read_csv(link)
+```
+
+## Funktion: `case_when()`
+
+Die Funktion `case_when()` wird verwendet, um eine Reihe von Bedingungen zu überprüfen und basierend auf diesen Bedingungen Werte zu erstellen. Die Funktion wird in Verbindung mit `mutate()` genutzt um eine neue Spalte zu erstellen in welcher die Werte gespeichert werden.
+
+### Beispiel: Pinguine
+
+```{r}
+penguins |> 
+    mutate(
+        size_category = case_when(
+            body_mass_g > 5000 ~ "gross",
+            body_mass_g > 4000 ~ "mittelgross",
+            body_mass_g > 3000 ~ "klein", 
+            .default = "sehr klein"
+        )) |> 
+    count(size_category)
+```
+
+### Beispiel: Lernende im Kanton Zürich
+
+Die Übersicht zeigt alle Lernenden im Kanton Zürich, nach Schulstufen und nach Schultypen. Studierende der Tertiärstufe 5A (Hochschulen) sind nicht enthalten. Die Daten werden jährlich für den Stichtag 15.9. erhoben.
+
+Datenkatalog: <https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html#/datasets/524\@bildungsstatistik-kanton-zuerich>
+
+```{r}
+
+lernende_in |> 
+    distinct(Jahr)
+
+lernende_in |> 
+    distinct(Stufe)
+
+lernende_in |> 
+    distinct(Geschlecht)
+
+lernende_in |> 
+    distinct(Staatsangehoerigkeit)
+
+lernende_in |> 
+    distinct(Traegerschaft)
+
+lernende_in |> 
+    distinct(Finanzierung)
+
+ggplot(data = lernende_in,
+       mapping = aes(x = Anzahl)) +
+    geom_histogram()
+
+lernende_in |> 
+    filter(Jahr == max(Jahr)) |> 
+    arrange(desc(Anzahl)) # |> View() nutzen im Daten anzuzeigen
+
+```
+
+## Daten transformieren
+
+### Funktion: `case_when()`
+
+```{r}
+lernende_in |> 
+    count(Geschlecht)
+
+lernende_in |> 
+    filter(Geschlecht == 2) 
+
+lernende <- lernende_in |> 
+    filter(Geschlecht != 2) |> 
+    mutate(Geschlecht = case_when(
+        Geschlecht %in% c("m", "M") ~ "männlich",
+        Geschlecht %in% c("f", "F") ~ "weiblich"
+    )) |> 
+    ## nur andeuten:
+    mutate(Traegerschaft = case_when(
+        Traegerschaft == "oef" ~ "öffentlich",
+        Traegerschaft == "priv" ~ "privat"
+    ))
+```
+
+### Daten eingrenzen
+
+```{r}
+lernende2022 <- lernende |> 
+    filter(Jahr == max(Jahr))
+```
+
+### Daten zusammenfassen
+
+```{r}
+## Aufgepasst: Dies ist weder die Anzahl Schüler noch die Anzahl Schulen
+lernende2022 |> 
+    count(Stufe, Finanzierung) 
+
+lernende2022 |> 
+    group_by(Stufe, Finanzierung) |>
+    summarise(Anzahl = sum(Anzahl)) |> 
+    mutate(Prozent = Anzahl / sum(Anzahl) * 100) 
+```

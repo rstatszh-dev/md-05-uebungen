@@ -12,3 +12,79 @@ editor: visual
 ---
 
 ## R-Pakete laden & Daten importieren
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(gapminder)
+```
+
+## Daten transformieren: Bedingte Anweisungen
+
+Nutze den `gapminder` Datensatz um mittels bedingter Anweisungen eine neue Spalte zu erstellen.
+
+1.  Starte mit `gapminder` und nutze den Pipe-Operator `|>` um die folgenden Schritte zu verketten.
+
+2.  Nutze die Funktion `mutate()`, um eine neue Spalte `life_expectancy_category` zu erstellen welche mittels `case_when()` die Lebenserwartung eines Landes in die Kategorien "Sehr niedrig", "Niedrig", "Mittel", "Hoch" und "Sehr hoch" einteilt.
+
+3.  Nutze die folgenden Bedingungen:
+
+    -   Lebenserwartung \< 50: "sehr niedrig"
+    -   Lebenserwartung \< 60: "niedrig"
+    -   Lebenserwartung \< 70: "mittel"
+    -   Lebenserwartung \< 80: "hoch"
+    -   Lebenserwartung \>= 80: "sehr hoch"
+
+4.  Speichere den resultierenden Datensatz in einem neuen Daten-Objekt `gapminder_cat`.
+
+```{r}
+gapminder_cat <- gapminder |> 
+  mutate(
+    life_expectancy_category = case_when(
+      lifeExp < 50 ~ "sehr niedrig",
+      lifeExp < 60 ~ "niedrig",
+      lifeExp < 70 ~ "mittel",
+      lifeExp < 80 ~ "hoch",
+      .default = "sehr hoch"
+    )
+  )
+```
+
+## Daten eingrenzen
+
+1.  Nutze `gapminder_cat` um die Daten auf das Jahr 2007 zu begrenzen.
+
+2.  Speichere den resultierenden Datensatz in einem neuen Daten-Objekt `gapminder_cat_2007`.
+
+```{r}
+gapminder_cat_2007 <- gapminder_cat |> 
+  filter(year == max(year))
+```
+
+## Daten visualisieren (**Bonusaufgabe**)
+
+1.  Visualisiere die neu erstellte Spalte `life_expectancy_category` in `gapminder_cat_2007` mittels eines Balkendiagramms.
+
+2.  Was fällt dir auf?
+
+```{r}
+ggplot(data = gapminder_cat_2007, 
+       mapping = aes(x = life_expectancy_category)) +
+  geom_bar() 
+```
+
+3.  Erstelle das gleiche Balkendiagramm wie in Punkt 1 und füge Farben für die Variable `continent` hinzu.
+
+```{r}
+ggplot(data = gapminder_cat_2007, 
+       mapping = aes(x = life_expectancy_category, 
+                     fill = continent)) +
+  geom_bar() 
+```
+
+4.  Nutze das Daten-Objekt `gapminder_cat_2007` und die `filter()` Funktion um nur die Länder mit einer sehr hohen Lebenserwartung zu selektieren. Wieviele Länder sind es?
+
+```{r}
+gapminder_cat_2007 |> 
+    filter(life_expectancy_category == "sehr hoch")
+```
