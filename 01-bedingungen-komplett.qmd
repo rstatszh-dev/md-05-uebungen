@@ -48,7 +48,7 @@ penguins |>
 
 Die Übersicht zeigt alle Lernenden im Kanton Zürich, nach Schulstufen und nach Schultypen. Studierende der Tertiärstufe 5A (Hochschulen) sind nicht enthalten. Die Daten werden jährlich für den Stichtag 15.9. erhoben.
 
-Datenkatalog: <https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html#/datasets/524\@bildungsstatistik-kanton-zuerich>
+Datenkatalog: [https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html#/datasets/524\\\@bildungsstatistik-kanton-zuerich](https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html#/datasets/524\@bildungsstatistik-kanton-zuerich){.uri}
 
 ```{r}
 
