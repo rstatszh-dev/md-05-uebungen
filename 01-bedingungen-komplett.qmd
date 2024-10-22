@@ -48,7 +48,7 @@ penguins |>
 
 Die Übersicht zeigt alle Lernenden im Kanton Zürich, nach Schulstufen und nach Schultypen. Studierende der Tertiärstufe 5A (Hochschulen) sind nicht enthalten. Die Daten werden jährlich für den Stichtag 15.9. erhoben.
 
-Datenkatalog: [https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html#/datasets/524\\\@bildungsstatistik-kanton-zuerich](https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html#/datasets/524\@bildungsstatistik-kanton-zuerich){.uri}
+Datenkatalog: [https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html#/datasets/524\\\@bildungsstatistik-kanton-zuerich](https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.html#/datasets/524@bildungsstatistik-kanton-zuerich){.uri}
 
 ```{r}
 
@@ -107,7 +107,7 @@ lernende <- lernende_in |>
 ### Daten eingrenzen
 
 ```{r}
-lernende2022 <- lernende |> 
+lernende_max_jahr <- lernende |> 
     filter(Jahr == max(Jahr))
 ```
 
@@ -115,10 +115,10 @@ lernende2022 <- lernende |>
 
 ```{r}
 ## Aufgepasst: Dies ist weder die Anzahl Schüler noch die Anzahl Schulen
-lernende2022 |> 
+lernende_max_jahr  |> 
     count(Stufe, Finanzierung) 
 
-lernende2022 |> 
+lernende_max_jahr  |> 
     group_by(Stufe, Finanzierung) |>
     summarise(Anzahl = sum(Anzahl)) |> 
     mutate(Prozent = Anzahl / sum(Anzahl) * 100) 
