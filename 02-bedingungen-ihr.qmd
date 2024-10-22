@@ -1,0 +1,14 @@
+---
+title: "Bedingte Anweisungen"
+format:
+  html:
+    embed-resources: true
+    toc: true
+execute:
+  warning: false
+editor_options: 
+  chunk_output_type: console
+editor: visual
+---
+
+## R-Pakete laden & Daten importieren
