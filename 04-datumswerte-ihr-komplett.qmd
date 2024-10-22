@@ -42,6 +42,18 @@ zeit <- read_csv("daten/dates.csv") |>
 
 ```{r}
 
+zeit |> 
+    mutate(
+        jahr = year(datetime),
+        monat = month(datetime, label = TRUE),
+        tag = day(datetime),
+        stunde = hour(datetime),
+        minute = minute(datetime),
+        sekunde = second(datetime),
+        wochentag = wday(datetime, label = TRUE),
+        woche = week(datetime),
+        quartal = quarter(datetime)
+    )
 ```
 
 ## Mit Datumswerten arbeiten
@@ -52,4 +64,8 @@ zeit <- read_csv("daten/dates.csv") |>
 
 ```{r}
 
+as_date(18628)
+
+as_date("1968-01-01") |> 
+    as.numeric()
 ```
