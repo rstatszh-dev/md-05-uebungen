@@ -52,6 +52,8 @@ Datenkatalog: [https://www.zh.ch/de/politik-staat/statistik-daten/datenkatalog.h
 
 ```{r}
 
+lernende_in
+
 lernende_in |> 
     distinct(Jahr)
 
@@ -88,11 +90,11 @@ lernende_in |>
 lernende_in |> 
     count(Geschlecht)
 
-lernende_in |> 
-    filter(Geschlecht == 2) 
+# lernende_in |> 
+#     filter(Geschlecht == 2) 
 
 lernende <- lernende_in |> 
-    filter(Geschlecht != 2) |> 
+    #filter(Geschlecht != 2) |> 
     mutate(Geschlecht = case_when(
         Geschlecht %in% c("m", "M") ~ "männlich",
         Geschlecht %in% c("f", "F") ~ "weiblich"
